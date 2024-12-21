@@ -19,7 +19,7 @@ if [[ ! -d bms/logs ]]; then
 	tar xzf /dist/mmsource-1.11.0-git1148-linux.tar.gz -C bms
 	tar xzf /dist/sourcemod-1.12.0-git7163-linux.tar.gz -C bms
 	unzip -o /dist/accelerator-2.5.0-git138-cd575aa-linux.zip -d bms
-	unzip -o /dist/SourceCoop-1.3-bms.zip -d bms
+	unzip -o /dist/SourceCoop-1.4-bms.zip -d bms
 
 	cat << EOF > bms/mapcycle.txt
 bm_c0a0a

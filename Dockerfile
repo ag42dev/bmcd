@@ -15,7 +15,7 @@ RUN set -x \
 	&& wget -P /dist -q -t2 -T30 https://mms.alliedmods.net/mmsdrop/1.11/mmsource-1.11.0-git1148-linux.tar.gz \
 	&& wget -P /dist -q -t2 -T30 https://sm.alliedmods.net/smdrop/1.12/sourcemod-1.12.0-git7163-linux.tar.gz \
 	&& wget -P /dist -q -t2 -T30 https://builds.limetech.io/files/accelerator-2.5.0-git138-cd575aa-linux.zip \
-	&& wget -P /dist -q -t2 -T30 https://github.com/ampreeT/SourceCoop/releases/download/v1.3/SourceCoop-1.3-bms.zip \
+	&& wget -P /dist -q -t2 -T30 https://github.com/ampreeT/SourceCoop/releases/download/v1.4/SourceCoop-1.4-bms.zip \
 	&& { \
 		echo '@ShutdownOnFailedCommand 1'; \
 		echo '@NoPromptForPassword 1'; \

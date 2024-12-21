@@ -19,7 +19,6 @@ ghcr.io/ag42dev/bmcd
 ```
 
 ## Environment
-
 | Variable="Default Value" | Description |
 | :----: | --- |
 | `BMCD_PORT=27015` | Game port. If not default, should be set along with docker port mapping |
@@ -31,6 +30,9 @@ ghcr.io/ag42dev/bmcd
 | `BMCD_STARTMAP="bm_c0a0a"` | Start map |
 | `BMCD_CONTACT=""` | Your contact |
 | `ADDITIONAL_ARGS=""` | Additional arguments passed to `srcds_run` |
+
+## Update or reinstall addons
+To update SourceCoop version on existing server, delete `bms/logs` directory from your server files, then restart the container.
 
 ## Image contents
 * [SteamCMD](https://hub.docker.com/r/cm2network/steamcmd) base image
