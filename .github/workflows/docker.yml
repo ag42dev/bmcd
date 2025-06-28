@@ -38,6 +38,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: ${{ env.AGB }} Get build info
+        id: build-info
+        run: |
+          echo "bmcd_version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "build_date=$(date -u --rfc-3339=seconds)" >> $GITHUB_OUTPUT
+
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -72,6 +78,9 @@ jobs:
           tags: |
             type=raw,value=main
             type=raw,value=latest
+          labels: |
+            bmcd.version=${{ steps.build-info.outputs.bmcd_version }}
+            bmcd.version.build.date=${{ steps.build-info.outputs.build_date }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
