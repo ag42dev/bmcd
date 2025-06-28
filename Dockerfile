@@ -45,4 +45,4 @@ ENTRYPOINT [""]
 CMD ["bash", "start.sh"]
 
 HEALTHCHECK --interval=60s --timeout=30s --start-period=3000s --retries=5 \
-	CMD quakestat -R -timeout 30 -a2s localhost:${BMCD_PORT:-27015} | grep -q "dedicated=1" || exit 1
+	CMD quakestat -R -timeout 30 -a2s "$(hostname -i):${BMCD_PORT:-27015}" | grep -q "dedicated=1" || exit 1
