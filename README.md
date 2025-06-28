@@ -30,7 +30,6 @@ ghcr.io/ag42dev/bmcd
 | `BMCD_CONTACT=""` | Your contact |
 | `BMCD_UID="1000"` | User ID used to run server and own files |
 | `BMCD_GID="1000"` | Group ID used to run server and own files |
-| `BMCD_CFG_CTRL_DOCKER=1` | If set to `1` or `true`, Docker will overwrite server config with environment variables each run. Any other value will only use environment variables to populate config at the very first run. |
 | `ADDITIONAL_ARGS=""` | Additional arguments passed to `srcds_run` |
 
 ## Update or reinstall addons
