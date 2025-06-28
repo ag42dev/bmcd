@@ -1,13 +1,25 @@
 #!/bin/bash
-mkdir -p "${STEAMAPPDIR}" ||:
 
-function getbmds() {
-	"${STEAMCMDDIR}/steamcmd.sh" +runscript "${HOMEDIR}/bmds_update"
+if [ "$EUID" -eq 0 ]; then
+	chown -R "$BMCD_UID:$BMCD_GID" "${HOME}" /dist
+	exec setpriv --reuid="$BMCD_UID" --regid="$BMCD_GID" --clear-groups "${HOME}/start.sh"
+fi
+
+function getbmds() { /usr/bin/steamcmd \
+	+force_install_dir "${STEAMAPPDIR}" \
+	+login anonymous \
+	+app_update "${STEAMAPPID}" \
+	validate +quit; }
+
+function modcfg() {
+	local file=$1 key=$2 value=$3
+	[[ -n $value ]] && {
+		touch "$file"
+		grep -q "^$key" "$file" && sed -i "/^$key/c $key \"$value\"" "$file" || echo "$key \"$value\"" >> "$file"
+	}
 }
 
-until getbmds; do
-	getbmds
-done
+until getbmds; do getbmds; done
 
 cd "${STEAMAPPDIR}" ||:
 mkdir -p .steam/sdk32 ||:
@@ -16,10 +28,10 @@ ln -fs bin/steamclient.so .steam/sdk32/steamclient.so
 BMCD_CFG="bms/cfg/server.cfg"
 
 if [[ ! -d bms/logs ]]; then
-	tar xzf /dist/mmsource-1.11.0-git1148-linux.tar.gz -C bms
-	tar xzf /dist/sourcemod-1.12.0-git7163-linux.tar.gz -C bms
-	unzip -o /dist/accelerator-2.5.0-git138-cd575aa-linux.zip -d bms
-	unzip -o /dist/SourceCoop-1.5-beta2-bms.zip -d bms
+	tar xzf /dist/mmsource* -C bms
+	tar xzf /dist/sourcemod* -C bms
+	unzip -o /dist/accelerator* -d bms
+	unzip -o /dist/SourceCoop* -d bms
 
 	cat << EOF > bms/mapcycle.txt
 bm_c0a0a
@@ -41,7 +53,6 @@ bm_c4a1a
 bm_c4a2a
 bm_c4a3a
 EOF
-fi
 
 cat << EOF > $BMCD_CFG
 hostname "${BMCD_HOSTNAME}"
@@ -54,7 +65,7 @@ mp_teamplay 1
 mp_forcerespawn 1
 mp_friendlyfire 0
 sv_alltalk 1
-sv_cheats 1
+sv_cheats 0
 sv_tags "custom, coop, sourcecoop"
 //sourcecoop_ft FIRSTPERSON_DEATHCAM 1
 sourcecoop_ft HEV_SOUNDS 1
@@ -67,13 +78,18 @@ sourcecoop_ft CHANGELEVEL_FX 1
 sourcecoop_ft TRANSFER_PLAYER_STATE 1
 sourcecoop_ft SP_WEAPONS 1
 EOF
+fi
 
-./srcds_run -game bms +ip 0.0.0.0 +log on \
+if [[ "$BMCD_CFG_CTRL_DOCKER" =~ ^(1|true)$ ]]; then
+	modcfg "$BMCD_CFG" "hostname" "${BMCD_HOSTNAME}"
+	modcfg "$BMCD_CFG" "sv_password" "${BMCD_PW}"
+	modcfg "$BMCD_CFG" "rcon_password" "${BMCD_RCONPW}"
+	modcfg "$BMCD_CFG" "sv_contact" "${BMCD_CONTACT}"
+fi
+
+"${STEAMAPPDIR}/srcds_run" -game bms +ip 0.0.0.0 +log on \
 	-port "${BMCD_PORT}" \
 	-tickrate "${BMCD_TICKRATE}" \
 	+maxplayers "${BMCD_MAXPLAYERS}" \
 	+map "${BMCD_STARTMAP}" \
-	+hostname "${BMCD_HOSTNAME}" \
-	+rcon_password "${BMCD_RCONPW}" \
-	+sv_password "${BMCD_PW}" \
 	"${ADDITIONAL_ARGS}"
