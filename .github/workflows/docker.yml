@@ -38,7 +38,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: ${{ env.AGB }} Get build info
+      - name: Get build info
         id: build-info
         run: |
           echo "bmcd_version=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
