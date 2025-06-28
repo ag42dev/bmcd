@@ -21,9 +21,9 @@ function modcfg() {
 
 until getbmds; do getbmds; done
 
+mkdir -p "${HOME}/.steam/sdk32" ||:
+ln -fs "${STEAMAPPDIR}/bin/steamclient.so" "${HOME}/.steam/sdk32/steamclient.so"
 cd "${STEAMAPPDIR}" ||:
-mkdir -p .steam/sdk32 ||:
-ln -fs bin/steamclient.so .steam/sdk32/steamclient.so
 
 BMCD_CFG="bms/cfg/server.cfg"
 
