@@ -17,7 +17,7 @@ COPY start.sh "${HOME}"
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		ca-certificates lib32gcc-s1 lib32stdc++6 unzip wget \
+		ca-certificates lib32gcc-s1 lib32stdc++6 nano qstat unzip wget \
 	&& mkdir -p "${STEAMAPPDIR}" /dist \
 	&& wget -P /dist -q -t2 -T30 "${SRC_MMS}" "${SRC_SM}" "${SRC_ACC}" "${SRC_SC}" \
 	&& chmod +x "${HOME}/start.sh" \
@@ -41,4 +41,8 @@ ENV BMCD_PORT=27015 \
 	BMCD_CFG_CTRL_DOCKER=1 \
 	ADDITIONAL_ARGS=""
 
+ENTRYPOINT [""]
 CMD ["bash", "start.sh"]
+
+HEALTHCHECK --interval=60s --timeout=30s --start-period=3000s --retries=5 \
+	CMD quakestat -R -timeout 30 -a2s localhost:${BMCD_PORT:-27015} | grep -q "dedicated=1" || exit 1
