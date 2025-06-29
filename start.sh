@@ -11,14 +11,6 @@ function getbmds() { /usr/bin/steamcmd \
 	+app_update "${STEAMAPPID}" \
 	validate +quit; }
 
-function modcfg() {
-	local file=$1 key=$2 value=$3
-	[[ -n $value ]] && {
-		touch "$file"
-		grep -q "^$key" "$file" && sed -i "/^$key/c $key \"$value\"" "$file" || echo "$key \"$value\"" >> "$file"
-	}
-}
-
 until getbmds; do getbmds; done
 
 mkdir -p "${HOME}/.steam/sdk32" ||:
