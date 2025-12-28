@@ -7,8 +7,8 @@ ENV STEAMAPPID=346680 \
 
 ARG SRC_MMS="https://mms.alliedmods.net/mmsdrop/1.12/mmsource-1.12.0-git1219-linux.tar.gz" \
 	SRC_SM="https://sm.alliedmods.net/smdrop/1.12/sourcemod-1.12.0-git7163-linux.tar.gz" \
-	SRC_ACC="https://builds.limetech.io/files/accelerator-2.5.0-git138-cd575aa-linux.zip" \
-	SRC_SC="https://github.com/ampreeT/SourceCoop/releases/download/v1.5-beta2/SourceCoop-1.5-beta2-bms.zip"
+	SRC_ACC="https://builds.limetech.io/files/accelerator-2.6.0-git164-87704dc-linux.zip" \
+	SRC_SC="https://github.com/ampreeT/SourceCoop/releases/download/v1.6/SourceCoop-1.6-bms.zip"
 
 COPY start.sh "${HOME}"
 
